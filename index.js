@@ -1,30 +1,48 @@
 import inquirer from "inquirer";
-const answers = await inquirer.prompt([
-    {
-        type: "number",
-        name: "numone",
-        message: "kindly inter your first number",
+import chalk from "chalk";
+let Convertion = {
+    "PKR": {
+        "USD": 0.0036101083032491,
+        "GBP": 0.0037,
+        "PKR": 1
     },
-    { type: "number",
-        name: "numtwo",
-        message: "kindly inter your second number",
+    "GBP": {
+        "USD": 1.21,
+        "PKR": 271.79,
+        "GBP": 1
+    },
+    "USD": {
+        "PKR": 277,
+        "GBP": 0.83,
+        "USD": 1
+    }
+};
+const answer = await inquirer.prompt([
+    {
+        type: "list",
+        name: "from",
+        choices: ["PKR", "USD", "GBP"],
+        message: "Select your currency: "
     },
     {
         type: "list",
-        name: "opperator",
-        choices: ['addition', 'subtraction', 'multiplication', "division"],
-        message: "Sellect your opperator:"
+        name: "to",
+        choices: ["PKR", "USD", "GBP"],
+        message: "Select your convertion currency: "
+    },
+    {
+        type: "number",
+        name: "amount",
+        message: "Enter your convertion amount: "
     }
 ]);
-if (answers.opperator === "addition") {
-    console.log(answers.numone + answers.numtwo);
+const { from, to, amount } = answer;
+if (from && to && amount) {
+    let result = Convertion[from][to] * amount;
+    console.log(`Your convertion from ${chalk.greenBright.bold(from)} to ${chalk.greenBright.bold(to)}
+    
+    is ${chalk.greenBright.bold(result)}`);
 }
-if (answers.opperator === "subtraction") {
-    console.log(answers.numone - answers.numtwo);
-}
-if (answers.opperator === "multiplication") {
-    console.log(answers.numone * answers.numtwo);
-}
-if (answers.opperator === "division") {
-    console.log(answers.numone / answers.numtwo);
+else {
+    console.log(chalk.green("Invalid inputs"));
 }
